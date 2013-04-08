@@ -36,3 +36,6 @@ var Tamato = {
         });
     }
 };
+$(document).on('ready', function(){
+    Tamato.showTable();
+});
