@@ -1,5 +1,6 @@
 $(document).on('ready', function(){
-    $.getJSON('includes/json.php?table=employee', function(rows) {
+    var table_name = 'employee';
+    $.getJSON('includes/json.php?table=' + table_name, function(rows) {
         var $table = $('<table />')
             .addClass('table')
             .attr({
