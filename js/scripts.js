@@ -5,16 +5,15 @@ $.ajaxSetup({
 var Tamato = {
     table_name: 'employee',
     table_attribs: {
-        id : 'table_content',
         cellspacing : 0,
-        cellpadding : 0
+        cellpadding : 0,
+        class : 'table',
+        id : 'table_content'
     },
     thead: '',
     showTable: function() {
         $.getJSON('includes/json.php?table=' + Tamato.table_name, function(rows) {
-            var $table = $('<table />')
-                .addClass('table')
-                .attr(Tamato.table_attribs);
+            var $table = $('<table />').attr(Tamato.table_attribs);
             var $thead = $('<thead />');
             var $tbody = $('<tbody />');
             var $tr = $('<tr />');
@@ -39,16 +38,21 @@ var Tamato = {
         $('table.table tr').on('click', function(){
             $($(this).children()).each(function(k, row) {
                 var $text = $(row).text();
-                $(row).text('').append(
-                    $('<input />')
-                        .attr({
-                            type: 'text',
-                            name: Tamato.thead[k],
-                            value: $text
-                        })
-                );
+                if ($text !== '') {
+                    $(row).text('').append(
+                        $('<input />')
+                            .attr({
+                                type: 'text',
+                                name: Tamato.thead[k],
+                                value: $text
+                            })
+                    );
+                }
             });
         });
+    },
+    updateTable: function() {
+        
     }
 };
 $(document).on('ready', function(){

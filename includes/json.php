@@ -1,21 +1,33 @@
 <?php
 if (isset($_GET['table']) && $_GET['table'] != '') {
     require_once 'config.php';
-    $tables = $response = array();
+    $field_names = $response = array();
     
-    $sql = "SHOW COLUMNS FROM `" . $_GET['table'] . "`;";
+    $sql = "SHOW COLUMNS " .
+           "FROM `" . $_GET['table'] . "`;";
     $result = mysql_query($sql);
     while ($table = mysql_fetch_assoc($result)) {
-        $tables[] = $table['Field'];
+        $field_names[] = $table['Field'];
     }
-    $response['th'] = $tables;
+    $response['th'] = $field_names;
     
-    $sql = "SELECT `" . implode('`, `', $tables) . "`
-            FROM `" . $_GET['table'] . "`;";
+    $sql = "SELECT `" . implode('`, `', $field_names) . "` " .
+           "FROM `" . $_GET['table'] . "`;";
     $result = mysql_query($sql);
-    while ($array = mysql_fetch_assoc($result)) {
-        $response['td'][] = $array;
+    while ($row = mysql_fetch_assoc($result)) {
+        $response['td'][] = $row;
     }
-
+    
     echo json_encode($response);
+    
+} else if (isset($_GET['id']) && $_GET['id'] != '') {
+    $values = array();
+    foreach ($_GET['values'] as $id => $value) {
+        $values[] = "`" . $id . "` = '" . $value . "'";
+    }
+    $sql = "UPDATE `" . $_GET['table'] . "` " .
+           "SET " . implode(', ', $values) . " " .
+           "WHERE `id` = '" . $_GET['id'] . "';";
+    mysql_query($sql);
+    $affected_rows = mysql_affected_rows();
 }
