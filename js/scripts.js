@@ -37,7 +37,17 @@ var Tamato = {
             $('div#content').append($table);
         });
         $('table.table tr').on('click', function(){
-
+            $($(this).children()).each(function(k, row) {
+                var $text = $(row).text();
+                $(row).text('').append(
+                    $('<input />')
+                        .attr({
+                            type: 'text',
+                            name: Tamato.thead[k],
+                            value: $text
+                        })
+                );
+            });
         });
     }
 };
