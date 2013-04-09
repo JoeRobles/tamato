@@ -21,6 +21,7 @@ if (isset($_GET['table']) && $_GET['table'] != '') {
     echo json_encode($response);
     
 } else if (isset($_GET['id']) && $_GET['id'] != '') {
+    require_once 'config.php';
     $to_process = json_decode($_POST['toProcess'], true);
     $values = array();
     foreach ($to_process['values'] as $value) {
@@ -31,7 +32,6 @@ if (isset($_GET['table']) && $_GET['table'] != '') {
     $sql = "UPDATE `" . $to_process['table'] . "` " .
            "SET " . implode(', ', $values) . " " .
            "WHERE `id` = '" . $_GET['id'] . "';";
-    mysql_query($sql);
+    mysql_query($sql)or exit(mysql_error());
     $affected_rows = mysql_affected_rows();
-    var_dump($affected_rows);
 }
