@@ -40,16 +40,12 @@ var Tamato = {
             $('div#content').append($table);
         });
         $('table.table tr td').on('click', function(){
-            if (Tamato.actualRowId === '') {
-                Tamato.actualRow = $(this).parent();
-                Tamato.appendInput();
-                Tamato.actualRowId = $(this).parent().attr('id');
-            } else if (Tamato.actualRowId !== $(this).parent().attr('id')) {
+            if (Tamato.actualRowId !== $(this).parent().attr('id')) {
                 Tamato.removeRow();
-                Tamato.actualRow = $(this).parent();
-                Tamato.appendInput();
-                Tamato.actualRowId = $(this).parent().attr('id');
             }
+            Tamato.actualRow = $(this).parent();
+            Tamato.appendInput();
+            Tamato.actualRowId = $(this).parent().attr('id');
         });
     },
     appendInput: function() {
