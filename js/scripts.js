@@ -39,6 +39,9 @@ var Tamato = {
     deleteRow: function() {
         
     },
+    getTables: function() {
+
+    },
     removeRow: function() {
         $($(Tamato.actualRow).children()).each(function(k, row) {
             if (k !== 0) {
@@ -60,6 +63,9 @@ var Tamato = {
             Tamato.appendInput();
             Tamato.actualRowId = $(this).parent().attr('id');
         });
+    },
+    setTable: function (name) {
+        
     },
     showTable: function() {
         $.getJSON(Tamato.JSONfile + '?table=' + Tamato.table_name, function(rows) {
