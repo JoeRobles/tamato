@@ -2,4 +2,4 @@
 $dbserver = 'localhost';
 $dbusername = 'root';
 $dbpassword = 'decenio97';
-$database_name = 'test';
+$database_name = 'tamato';

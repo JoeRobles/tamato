@@ -9,6 +9,7 @@ var Tamato = {
         cellspacing : 0,
         cellpadding : 0
     },
+    thead: '',
     showTable: function() {
         $.getJSON('includes/json.php?table=' + Tamato.table_name, function(rows) {
             var $table = $('<table />')
@@ -20,6 +21,7 @@ var Tamato = {
 
             $table.append($thead);
             $thead.append($tr);
+            Tamato.thead = rows.th;
             $(rows.th).each(function(i, name) {
                 $tr.append($('<th />').text(name));
             });
@@ -33,6 +35,9 @@ var Tamato = {
                 $tbody.append($tb);
             });
             $('div#content').append($table);
+        });
+        $('table.table tr').on('click', function(){
+
         });
     }
 };
