@@ -3,14 +3,17 @@ $.ajaxSetup({
     async: false
 });
 var Tamato = {
+    actualRow: '',
+    actualRowId: '',
     table_name: 'employee',
+    thead: '',
     table_attribs: {
         cellspacing : 0,
         cellpadding : 0,
         class : 'table',
         id : 'table_content'
     },
-    thead: '',
+            
     showTable: function() {
         $.getJSON('includes/json.php?table=' + Tamato.table_name, function(rows) {
             var $table = $('<table />').attr(Tamato.table_attribs);
@@ -27,7 +30,8 @@ var Tamato = {
 
             $table.append($tbody);
             $(rows.td).each(function(j, content) {
-                var $tb = $('<tr />');
+                var $tb = $('<tr />')
+                            .attr({ id: content[rows.th[0]]});
                 $(rows.th).each(function(i, name) {
                     $tb.append($('<td />').text(content[name]));
                 });
@@ -35,8 +39,22 @@ var Tamato = {
             });
             $('div#content').append($table);
         });
-        $('table.table tr').on('click', function(){
-            $($(this).children()).each(function(k, row) {
+        $('table.table tr td').on('click', function(){
+            if (Tamato.actualRowId === '') {
+                Tamato.actualRow = $(this).parent();
+                Tamato.appendInput();
+                Tamato.actualRowId = $(this).parent().attr('id');
+            } else if (Tamato.actualRowId !== $(this).parent().attr('id')) {
+                Tamato.removeRow();
+                Tamato.actualRow = $(this).parent();
+                Tamato.appendInput();
+                Tamato.actualRowId = $(this).parent().attr('id');
+            }
+        });
+    },
+    appendInput: function() {
+        $($(Tamato.actualRow).children()).each(function(k, row) {
+            if (k !== 0) {
                 var $text = $(row).text();
                 if ($text !== '') {
                     $(row).text('').append(
@@ -48,7 +66,18 @@ var Tamato = {
                             })
                     );
                 }
-            });
+            }
+        });
+    },
+    removeRow: function() {
+        $($(Tamato.actualRow).children()).each(function(k, row) {
+            if (k !== 0) {
+                var $value = $(row).children().val();
+                if ($(row).text() === '') {
+                    $(row).children().remove();
+                    $(row).text($value);
+                }
+            }
         });
     },
     updateTable: function() {
