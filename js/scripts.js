@@ -9,10 +9,10 @@ var Tamato = {
     JSONfile: 'includes/json.php',
     table_name: 'employee',
     table_attribs: {
-        cellspacing : 0,
-        cellpadding : 0,
-        class : 'table',
-        id : 'table_content'
+        cellspacing: 0,
+        cellpadding: 0,
+        class: 'table',
+        id: 'table_content'
     },
     thead: '',
             
@@ -42,7 +42,7 @@ var Tamato = {
     getTables: function() {
 
     },
-    removeRow: function() {
+    removeInput: function() {
         $($(Tamato.actualRow).children()).each(function(k, row) {
             if (k !== 0) {
                 var $value = $(row).children().val();
@@ -57,7 +57,7 @@ var Tamato = {
         $('table.table tr td').on('click', function(){
             if (Tamato.actualRowId !== '' && Tamato.actualRowId !== $(this).parent().attr('id')) {
                 Tamato.updateRow();
-                Tamato.removeRow();
+                Tamato.removeInput();
             }
             Tamato.actualRow = $(this).parent();
             Tamato.appendInput();
@@ -83,8 +83,7 @@ var Tamato = {
 
             $table.append($tbody);
             $(rows.td).each(function(j, content) {
-                var $tb = $('<tr />')
-                            .attr({ id: content[rows.th[0]]});
+                var $tb = $('<tr />').attr({ id: content[rows.th[0]]});
                 $(rows.th).each(function(i, name) {
                     $tb.append($('<td />').text(content[name]));
                 });
@@ -97,7 +96,10 @@ var Tamato = {
     updateRow: function() {
         var rowValues = new Array();
         $($('table.table tr#' + Tamato.actualRowId).children()).each(function(k, row) {
-            var o = { field_name: $('input', row).attr('name'), value: $('input', row).val() };
+            var o = {
+                field_name: $('input', row).attr('name'),
+                value: $('input', row).val()
+            };
             rowValues.push(o);
         });
         var process = {
