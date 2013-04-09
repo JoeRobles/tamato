@@ -5,6 +5,7 @@ $.ajaxSetup({
 var Tamato = {
     actualRow: '',
     actualRowId: '',
+    JSONfile: 'includes/json.php',
     table_name: 'employee',
     thead: '',
     table_attribs: {
@@ -15,7 +16,7 @@ var Tamato = {
     },
             
     showTable: function() {
-        $.getJSON('includes/json.php?table=' + Tamato.table_name, function(rows) {
+        $.getJSON(Tamato.JSONfile + '?table=' + Tamato.table_name, function(rows) {
             var $table = $('<table />').attr(Tamato.table_attribs);
             var $thead = $('<thead />');
             var $tbody = $('<tbody />');
@@ -40,7 +41,8 @@ var Tamato = {
             $('div#content').append($table);
         });
         $('table.table tr td').on('click', function(){
-            if (Tamato.actualRowId !== $(this).parent().attr('id')) {
+            if (Tamato.actualRowId !== '' && Tamato.actualRowId !== $(this).parent().attr('id')) {
+                Tamato.updateTable();
                 Tamato.removeRow();
             }
             Tamato.actualRow = $(this).parent();
@@ -77,7 +79,22 @@ var Tamato = {
         });
     },
     updateTable: function() {
-        
+        var rowValues = new Array();
+        $($('table.table tr#' + Tamato.actualRowId).children()).each(function(k, row) {
+            var o = { field_name: $('input', row).attr('name'), value: $('input', row).val() };
+            rowValues.push(o);
+        });
+        var process = {
+            table: Tamato.table_name,
+            values: rowValues
+        }
+        $.ajax({
+            url: Tamato.JSONfile + '?id=' + Tamato.actualRowId,
+            dataType: 'json',
+            data: { toProcess: JSON.stringify(process) }
+        }).done(function(){
+            console.log('done');
+        });
     }
 };
 $(document).on('ready', function(){

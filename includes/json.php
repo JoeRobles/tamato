@@ -21,13 +21,17 @@ if (isset($_GET['table']) && $_GET['table'] != '') {
     echo json_encode($response);
     
 } else if (isset($_GET['id']) && $_GET['id'] != '') {
+    $to_process = json_decode($_POST['toProcess'], true);
     $values = array();
-    foreach ($_GET['values'] as $id => $value) {
-        $values[] = "`" . $id . "` = '" . $value . "'";
+    foreach ($to_process['values'] as $value) {
+        if (!empty($value)) {
+            $values[] = "`" . $value['field_name'] . "` = '" . $value['value'] . "'";
+        }
     }
-    $sql = "UPDATE `" . $_GET['table'] . "` " .
+    $sql = "UPDATE `" . $to_process['table'] . "` " .
            "SET " . implode(', ', $values) . " " .
            "WHERE `id` = '" . $_GET['id'] . "';";
     mysql_query($sql);
     $affected_rows = mysql_affected_rows();
+    var_dump($affected_rows);
 }
