@@ -48,14 +48,15 @@ var Tamato = {
     deleteRow: function() {
         $('table.table tr td').on('click', 'a#' + Tamato.delete_id, function(e) {
             e.preventDefault();
+            var $this = $(this);
             var $confirm = confirm("¿Esta seguro de eliminar este registro?");
             if ($confirm === true) {
                 $.ajax({
-                    url: $(this).attr('href'),
+                    url: $this.attr('href'),
                     dataType: 'json',
                     data: { to_process: JSON.stringify({ table: Tamato.table_name }) }
                 }).done(function(){
-                    console.log('Delete done!');
+                    $this.parent().parent().remove();
                 });
             } 
         });

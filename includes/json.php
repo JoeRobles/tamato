@@ -34,4 +34,13 @@ if (isset($_GET['table']) && $_GET['table'] != '') {
            "WHERE `id` = '" . $_GET['id'] . "';";
     mysql_query($sql);
     $affected_rows = mysql_affected_rows();
+    echo json_encode(array('Updated successfully!'));
+
+} else if (isset($_GET['delete']) && $_GET['delete'] != '') {
+    require_once 'config.php';
+    $to_process = json_decode($_POST['to_process'], true);
+    $sql = "DELETE FROM `" . $to_process['table'] . "` " .
+           "WHERE `id` = '" . $_GET['delete'] . "';";
+    mysql_query($sql);
+    echo json_encode(array('Deleted successfully!'));
 }
