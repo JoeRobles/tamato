@@ -67,13 +67,15 @@ var Tamato = {
     },
     selectRow: function() {
         $('table.table tr td').on('click', function(){
-            if (Tamato.actual_row_id !== '' && Tamato.actual_row_id !== $(this).parent().attr('id')) {
-                Tamato.updateRow();
-                Tamato.removeInput();
+            if (Tamato.actual_row_id !== $(this).parent().attr('id')) {
+                if (Tamato.actual_row_id !== '') {
+                    Tamato.updateRow();
+                    Tamato.removeInput();
+                }
+                Tamato.actual_row = $(this).parent();
+                Tamato.appendInput();
+                Tamato.actual_row_id = $(this).parent().attr('id');
             }
-            Tamato.actual_row = $(this).parent();
-            Tamato.appendInput();
-            Tamato.actual_row_id = $(this).parent().attr('id');
         });
     },
     setTable: function (name) {
