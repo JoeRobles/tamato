@@ -6,7 +6,7 @@ $.ajaxSetup({
 var Tamato = {
     actual_row: '',
     actual_row_id: '',
-    delete_image: '',
+    delete_text: 'Eliminar registro',
     JSON_file: 'includes/json.php',
     table_name: 'employee',
     table_attribs: {
@@ -32,16 +32,12 @@ var Tamato = {
                     );
                 } else {
                     var $a = $('<a />')
-                            .attr({
-                                href: Tamato.JSON_file + '?delete=' + $text,
-                                alt: 'Delete row',
-                                title: 'Delete row'
-                            }).text('Delete row')
+                                .attr({
+                                    href: Tamato.JSON_file + '?delete=' + $text,
+                                    alt: Tamato.delete_text,
+                                    title: Tamato.delete_text
+                                }).text(Tamato.delete_text);
                     $(row).text('').append($a);
-                    if (Tamato.delete_image !== '') {
-                        $a.append(
-                        )
-                    }
                 }
             }
         });
