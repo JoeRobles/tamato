@@ -6,6 +6,7 @@ $.ajaxSetup({
 var Tamato = {
     actual_row: '',
     actual_row_id: '',
+    delete_id: 'delete_row',
     delete_text: 'Eliminar registro',
     JSON_file: 'includes/json.php',
     table_name: 'employee',
@@ -13,7 +14,6 @@ var Tamato = {
         cellspacing: 0,
         cellpadding: 0,
         class: 'table',
-        id: 'table_content'
     },
     thead: '',
             
@@ -22,23 +22,23 @@ var Tamato = {
             var $text = $(row).text();
             if ($text !== '') {
                 if (k !== 0) {
-                    $(row).text('').append(
-                        $('<input />')
-                            .attr({
-                                type: 'text',
-                                name: Tamato.thead[k],
-                                value: $text
-                            })
-                    );
+                    var $app = $('<input />')
+                        .attr({
+                            type: 'text',
+                            name: Tamato.thead[k],
+                            value: $text
+                        })
                 } else {
-                    var $a = $('<a />')
-                                .attr({
-                                    href: Tamato.JSON_file + '?delete=' + $text,
-                                    alt: Tamato.delete_text,
-                                    title: Tamato.delete_text
-                                }).text(Tamato.delete_text);
-                    $(row).text('').append($a);
+                    var $app = $('<a />')
+                        .attr({
+                            alt: Tamato.delete_text,
+                            class: Tamato.delete_class,
+                            href: Tamato.JSON_file + '?delete=' + $text,
+                            id: Tamato.delete_id,
+                            title: Tamato.delete_question
+                        }).text(Tamato.delete_text)
                 }
+                $(row).text('').append($app);
             }
         });
     },
@@ -46,7 +46,19 @@ var Tamato = {
         
     },
     deleteRow: function() {
-        
+        $('table.table tr td').on('click', 'a#' + Tamato.delete_id, function(e) {
+            e.preventDefault();
+            var $confirm = confirm("¿Esta seguro de eliminar este registro?");
+            if ($confirm === true) {
+                $.ajax({
+                    url: $(this).attr('href'),
+                    dataType: 'json',
+                    data: { to_process: JSON.stringify({ table: Tamato.table_name }) }
+                }).done(function(){
+                    console.log('Delete done!');
+                });
+            } 
+        });
     },
     getTables: function() {
 
@@ -66,7 +78,7 @@ var Tamato = {
         });
     },
     selectRow: function() {
-        $('table.table tr td').on('click', function(){
+        $('table.table tr').on('click', 'td', function(){
             if (Tamato.actual_row_id !== $(this).parent().attr('id')) {
                 if (Tamato.actual_row_id !== '') {
                     Tamato.updateRow();
@@ -77,6 +89,7 @@ var Tamato = {
                 Tamato.actual_row_id = $(this).parent().attr('id');
             }
         });
+        Tamato.deleteRow();
     },
     setTable: function (name) {
         
@@ -125,7 +138,7 @@ var Tamato = {
             dataType: 'json',
             data: { to_process: JSON.stringify(row_content) }
         }).done(function(){
-            console.log('done');
+            console.log('Update done!');
         });
     }
 };
