@@ -50,7 +50,7 @@ var Tamato = {
         $('table.table tr td').on('click', 'a#' + Tamato.delete_id, function(e) {
             e.preventDefault();
             var $this = $(this);
-            var $confirm = confirm(Tamato.comfirm_message);
+            var $confirm = confirm(Tamato.confirm_message);
             if ($confirm === true) {
                 $.ajax({
                     url:      $this.attr('href'),
