@@ -21,13 +21,14 @@ var Tamato = {
     thead: '',
             
     appendInput: function(){
-        var row_content = new Array();
+        var row_content = [];
         $($(Tamato.actual_row).children()).each(function(k, row){
             var $text = $(row).text();
             row_content.push($text);
             if ($text !== '') {
+                var $app;
                 if (k === 0) {
-                    var $app = $('<a />')
+                    $app = $('<a />')
                         .attr({
                             alt:   Tamato.delete_text,
                             class: Tamato.delete_class,
@@ -36,7 +37,7 @@ var Tamato = {
                             title: Tamato.delete_question
                         }).text(Tamato.delete_text);
                 } else {
-                    var $app = $('<input />')
+                    $app = $('<input />')
                         .attr({
                             type:  'text',
                             name:  Tamato.thead[k],
@@ -79,11 +80,12 @@ var Tamato = {
         $($(Tamato.actual_row).children()).each(function(k, row){
             var $row = $(row);
             var $children = $row.children();
+            var $new_text;
             if (k === 0) {
                 var $value = $children.attr('href');
-                var $new_text = $value.split('=').slice(-1)[0];
+                $new_text = $value.split('=').slice(-1)[0];
             } else {
-                var $new_text = $children.val();
+                $new_text = $children.val();
             }
             $children.remove();
             if (Tamato.cancel_action) {
@@ -150,7 +152,7 @@ var Tamato = {
         Tamato.reset();
     },
     updateRow: function(){
-        var row_values = new Array();
+        var row_values = [];
         $($('table.table tr#' + Tamato.actual_row_id).children()).each(function(k, row){
             var o = {
                 field_name: $('input', row).attr('name'),
